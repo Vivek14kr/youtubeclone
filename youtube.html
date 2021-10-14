@@ -53,20 +53,21 @@
     let videos = document.getElementById("videos")
 
     var carti = JSON.parse(localStorage.getItem("cart"));
-
+    console.log("cart", carti)
 
     searchVideos()
     async function searchVideos() {
+        console.log("aaj", carti[carti.length - 1])
 
         let res = await fetch(
-            `https://youtube.googleapis.com/youtube/v3/search?q=${carti}&part=snippet&type=video&key=AIzaSyDc9h5pCe3QMmcuxo3Td4dqVbT1Lkz5cr0&maxResults=20`
+            `https://youtube.googleapis.com/youtube/v3/search?q=${carti[carti.length - 1]}&part=snippet&type=video&key=AIzaSyDc9h5pCe3QMmcuxo3Td4dqVbT1Lkz5cr0&maxResults=20`
         )
         let data = await res.json();
 
         console.log("data", data)
         appendVideos(data.items)
         carti.pop();
-       
+
     }
 
     async function showvideos() {
@@ -78,9 +79,10 @@
 
         console.log("show videodata", data)
         appendVideoss(data.items)
-        
+
     }
-  function appendVideos(video_data) {
+
+    function appendVideos(video_data) {
         videos.innerHTML = null
         video_data.forEach(({
             id: {
@@ -104,20 +106,25 @@
 
     }
 
-    function appendVideoss(video_data){
-    videos.innerHTML = null
-    video_data.forEach(({ id: { videoId }}) => {
-    console.log(videoId)
-    let div = document.createElement("div");
-          div.style.width = "1000px";
-          div.style.border = "1px solid black"
+    function appendVideoss(video_data) {
+        videos.innerHTML = null
+        video_data.forEach(({
+            id: {
+                videoId
+            }
+        }) => {
+            console.log(videoId)
+            let div = document.createElement("div");
+            div.style.width = "1000px";
+            div.style.border = "1px solid black"
 
 
-    //embed youtube video to our web app
-    div.innerHTML = `<iframe width="360" height="215" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+            //embed youtube video to our web app
+            div.innerHTML =
+                `<iframe width="360" height="215" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
 
-    videos.append(div)
-    });
+            videos.append(div)
+        });
 
 
     }
