@@ -79,7 +79,7 @@
         /* width: 100%; */
         height: 50px;
         align-items: center;
-        justify-content: centerc;
+        justify-content: center;
     }
 
     #left {
@@ -90,6 +90,11 @@
 
     #vsearch {
         margin-left: 2%;
+    }
+
+    #username {
+        margin-left: 10%;
+        color: black;
     }
 </style>
 <script src="https://kit.fontawesome.com/f001449fdc.js" crossorigin="anonymous"></script>
@@ -111,10 +116,13 @@
         <div id="middle">
             <input type="text" id="query">
             <button id="btn" onclick="send()"><i class="fas fa-search"></i></button>
+
             <div id="vsearch">
                 <a href=""><i class="fas fa-microphone"></i></a>
 
             </div>
+            <p id="username"></p>
+
 
         </div>
 
@@ -137,9 +145,14 @@
 
 <script>
     let videos = document.getElementById("videos")
+    var username = document.getElementById("username")
+    var cat = JSON.parse(localStorage.getItem("cat"));
+
+
 
     async function showVideos() {
-
+       username.innerHTML = null; 
+        username.innerText = "Welcome " + cat[cat.length - 1];
         let res = await fetch(
             `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=IN&key=AIzaSyDc9h5pCe3QMmcuxo3Td4dqVbT1Lkz5cr0&maxResults=20`
         )

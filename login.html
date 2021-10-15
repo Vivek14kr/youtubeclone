@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="login">
+        <form action="" onsubmit="login(event)" id="login-form">
+            <h1>login</h1>
+            <label for="">Username</label>
+            <input type="text" id="user" placeholder="username">
+            <br>
+            <label for="">Password</label>
+            <input type="text" id="pass" placeholder="name">
+            <br>
+            <input type="submit" id="submit">
+        </form>
+    </div>
+</body>
+
+</html>
+<script>
+    function login(e) {
+        e.preventDefault();
+        let form = document.getElementById("login-form")
+        let user_data = {
+            password: form.pass.value,
+            username: form.user.value,
+        }
+        let data_to_send = JSON.stringify(user_data)
+        console.log('data_to_send:', data_to_send)
+        fetch("https://masai-api-mocker.herokuapp.com/auth/login", {
+                method: "POST",
+                body: data_to_send,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((res) => {
+                return res.json()
+            })
+            .then((res) => {
+    
+                fetchmyData(user_data.username, res.token)
+            })
+            .catch((err) => {
+                alert("Wrong crediantials, Try again")
+            })
+    }
+
+    function fetchmyData(username, token) {
+        fetch(`https://masai-api-mocker.herokuapp.com/user/${username}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then((res) => {
+                return res.json()
+            })
+            .then((res) => {
+                send()
+                function send() {
+                if (localStorage.getItem("cat") === null) {
+                localStorage.setItem("cat", JSON.stringify([]));
+                }
+                // var query = document.getElementById("query").value
+
+                addtoCart(username)
+                // window.location.href = "youtube.html"
+
+                function addtoCart(username) {
+                console.log(username)
+                let products_cart = JSON.parse(localStorage.getItem("cat"));
+
+                products_cart.push(username);
+
+                localStorage.setItem("cat", JSON.stringify(products_cart));
+
+
+                }
+                }
+                 window.location.href = "homepage.html"
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+</script>

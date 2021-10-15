@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="signup">
+        <form action="" onsubmit="check(event)" id="signup-form">
+            <h1>Signup</h1>
+            <label for="">Name</label>
+            <input type="text" id="name" placeholder="name">
+            <br>
+            <label for="">Email</label>
+            <input type="text" id="email" placeholder="name">
+            <br>
+            <label for="">Password</label>
+            <input type="text" id="password" placeholder="name">
+            <br>
+            <label for="">Username</label>
+            <input type="text" id="username" placeholder="name">
+            <br>
+            <label for="">Mobile</label>
+            <input type="number" id="mobile" placeholder="name">
+            <br>
+            <label for="">Description</label>
+            <input type="text" id="description" placeholder="name">
+            <br>
+            <input type="submit" id="submit">
+        </form>
+    </div>
+</body>
+
+</html>
+
+<script>
+    async function check(e) {
+        e.preventDefault()
+        let form = document.getElementById("signup-form")
+        let user_data = {
+            name: form.name.value,
+            email: form.email.value,
+            password: form.password.value,
+            username: form.username.value,
+            mobile: form.mobile.value,
+            description: form.description.value,
+        }
+        user_data = JSON.stringify(user_data)
+        fetch("https://masai-api-mocker.herokuapp.com/auth/register", {
+                method: "POST",
+                body: user_data,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((res) => {
+                return res.json()
+            })
+            .then((res) => {
+                window.location.href = "login.html"
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+</script>
